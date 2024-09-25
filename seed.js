@@ -1,4 +1,4 @@
-require("./database");
+// require("./database");
 
 const Book = require("./models/Book");
 
@@ -18,4 +18,5 @@ async function seed() {
 	libro3.save();
 }
 
-seed();
+module.exports = seed;
+// seed();

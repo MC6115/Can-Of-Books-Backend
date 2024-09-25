@@ -4,6 +4,7 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const seed = require("./seed")
 
 require("./database");
 
@@ -20,7 +21,7 @@ app.get("/test", (request, response) => {
 
 app.get("/books", async (request, response) => {
 	const books = await Book.find({});
-	response.json(books);
+	response.status(200).json(books);
 });
 
 app.get("/addbook", async (request, response) => {
@@ -31,6 +32,30 @@ app.get("/addbook", async (request, response) => {
 	});
 	book.save();
 	response.status(201).json({ message: "New book created!" });
+});
+
+app.get("/seed", async (request, response) => {
+	seed();
+	response.status(201).json({ message: "Seed executed" });
+});
+
+app.get("/reset", async (request, response) => {
+	try {
+		await Book.deleteMany({});
+	} catch (error) {
+		console.log(error)
+	}
+	response.status(201).json({ message: "Reset executed" });
+});
+
+app.get("/libros", async (request, response) => {
+	try {
+		responsee.redirect("/books", 308);
+	} catch (e) {
+		console.log(e);
+		console.log(typeof e)
+		response.status(500).json({ error: e });
+	}
 });
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
